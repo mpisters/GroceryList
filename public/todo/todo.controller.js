@@ -39,13 +39,14 @@ angular.module('todoController', [])
                 });
         };
 
-        // $scope.updateTodo = function(id){
-        //     $scope.loading = true;
-        //     Todos.update(id, isBought)
-        //     // if successful creation, call our get function to get all the new todos
-        //         .success(function(data) {
-        //             $scope.loading = false;
-        //             $scope.todos = data; // assign our new list of todos
-        //         });
-        // }
+        $scope.updateTodoStatus = function(todo){
+            $scope.loading = true;
+            todo.checked = $scope.checked;
+            Todos.update(todo._id, todo)
+            // if successful creation, call our get function to get all the new todos
+                .success(function(data) {
+                    $scope.loading = false;
+                    $scope.todos = data; // assign our new list of todos
+                });
+        }
     }]);

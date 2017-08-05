@@ -45,16 +45,18 @@ module.exports = function (app) {
         });
     });
 
-    // app.update('/api/todos/:todo_id', function (req, res) {
-    //     Todo.update({
-    //         _id: req.params.todo_id
-    //     }, function (err, todo) {
-    //         if (err)
-    //             res.send(err);
-    //
-    //         getTodos(res);
-    //     });
-    // });
+    app.put('/api/todos/:todo_id', function (req, res) {
+        Todo.findById(req.params.todo_id, function (err, todo) {
+            if (err) {
+                res.send(err)
+            }
+            ;
+            todo.text = req.body.text || todo.text;
+            todo.quantity = req.body.quantity || todo.quantity;
+            todo.isBought = req.body.isBought || todo.isBought;
+            getTodos(res);
+        });
+    });
 
     // application -------------------------------------------------------------
     app.get('*', function (req, res) {

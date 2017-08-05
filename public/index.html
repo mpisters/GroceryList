@@ -47,7 +47,7 @@
                 <td><span ng-class="{strike: checked}">{{todo.text}}</span></td>
                 <td>{{todo.quantity}}</td>
                 <td><div class="checkbox">
-                    <label><input ng-change="updateTodo(todo._id)" type="checkbox" value="" ng-model="checked"></label>
+                    <label><input type="checkbox" ng-model="checked" ng-true-value="false" ng-false-value="true" ng-change="updateTodoStatus(todo)"></label>
                 </div></td>
                 </tbody>
             </table>
