@@ -6,6 +6,11 @@ angular.module('todoController', [])
     .controller('mainController', ['$scope','$http','Todos', function($scope, $http, Todos) {
         $scope.formData = {};
         $scope.loading = true;
+        $scope.NotEditMode = true;
+        $scope.changeToEditMode = function () {
+            $scope.NotEditMode = false;
+        }
+
 
         Todos.get()
             .success(function(data) {
@@ -22,8 +27,8 @@ angular.module('todoController', [])
 
                     .success(function(data) {
                         $scope.loading = false;
-                        $scope.formData = {}; // clear the form so our user is ready to enter another
-                        $scope.todos = data; // assign our new list of todos
+                        $scope.formData = {};
+                        $scope.todos = data;
                     });
             }
         };
@@ -32,21 +37,38 @@ angular.module('todoController', [])
             $scope.loading = true;
 
             Todos.delete(id)
-            // if successful creation, call our get function to get all the new todos
                 .success(function(data) {
                     $scope.loading = false;
-                    $scope.todos = data; // assign our new list of todos
+                    $scope.todos = data;
                 });
         };
 
         $scope.updateTodoStatus = function(todo){
+            $scope.NotEditMode = true;
             $scope.loading = true;
-            todo.checked = $scope.checked;
             Todos.update(todo._id, todo)
-            // if successful creation, call our get function to get all the new todos
                 .success(function(data) {
                     $scope.loading = false;
-                    $scope.todos = data; // assign our new list of todos
+                    $scope.todos = data;
                 });
         }
+
+        $scope.updateQuantity =function(todo, isIncreased){
+            $scope.loading = true;
+            if (isIncreased){
+                todo.quantity = todo.quantity + 1;
+            } else{
+                if(todo.quantity > 1){
+                    todo.quantity = todo.quantity - 1;
+                } else{
+                    window.alert("You are not allowed to decrease the number anymore!");
+                }
+            }
+            Todos.update(todo._id, todo)
+                .success(function(data) {
+                    $scope.loading = false;
+                    $scope.todos = data;
+                });
+        }
+
     }]);

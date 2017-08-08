@@ -4,3 +4,9 @@ body                    { padding-top:50px; }
 .strike {
     text-decoration: line-through;
 }
+.trash{
+    color: #d80002
+}
+.update{
+    color: #9c9c9c;
+}

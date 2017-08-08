@@ -1,5 +1,6 @@
 var Todo = require("../models/todo.model");
-
+var main = require("../helpers/main");
+var path = require("path");
 function getTodos(res) {
     Todo.find(function (err, todos) {
 
@@ -24,6 +25,7 @@ module.exports = function (app) {
         Todo.create({
             text: req.body.text,
             quantity: 1,
+            checked: false,
             done: false
         }, function (err, todo) {
             if (err)
@@ -46,20 +48,16 @@ module.exports = function (app) {
     });
 
     app.put('/api/todos/:todo_id', function (req, res) {
-        Todo.findById(req.params.todo_id, function (err, todo) {
-            if (err) {
-                res.send(err)
-            }
-            ;
-            todo.text = req.body.text || todo.text;
-            todo.quantity = req.body.quantity || todo.quantity;
-            todo.isBought = req.body.isBought || todo.isBought;
+        var params = main.filterParams(req.body, ["text", "checked", "quantity"]);
+        Todo.findOneAndUpdate({_id: req.params.todo_id}, params, {new: true}, function(err, todo) {
+            if (err) { res.send({success: 0, msg: err}); }
+            console.log("Todo: ", todo);
             getTodos(res);
         });
     });
 
     // application -------------------------------------------------------------
     app.get('*', function (req, res) {
-        res.sendfile(__dirname + '../../public/index.html');
+        res.sendfile(path.resolve('public/index.html'));
     });
 };

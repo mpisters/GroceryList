@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
 
-    <title>Node/Angular Todo App</title>
+    <title>Grocery List | Michelle Pisters</title>
 
     <!-- SCROLLS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
@@ -19,18 +19,22 @@
     <script src="core.js"></script>
     <script src="todo/todo.controller.js"></script>
     <script src="todo/todo.service.js"></script>
+    <script src="https://use.fontawesome.com/91b1908128.js"></script>
 
 </head>
-<!-- SET THE CONTROLLER AND GET ALL TODOS -->
 <body ng-controller="mainController">
 <div class="container">
 
-    <!-- HEADER AND TODO COUNT -->
+
     <div class="jumbotron text-center">
-        <h1>I'm a Todo-aholic <span class="label label-info">{{ todos.length }}</span></h1>
+        <h1>Grocery List <span class="label label-info">{{ todos.length }}</span></h1>
     </div>
 
-    <!-- TODO LIST -->
+
+    <!-- TODO make it possible to change name of item -->
+    <!-- TODO make it possible to specify in kg/l/etc -->
+
+
     <div id="todo-list" class="row">
         <div class="col-sm-8 col-sm-offset-2">
 
@@ -44,10 +48,17 @@
                 </tr>
                 </thead>
                 <tbody ng-repeat="todo in todos">
-                <td><span ng-class="{strike: checked}">{{todo.text}}</span></td>
+                <td><input type="text"  ng-model='todo.text'
+                           ng-hide="NotEditMode" ng-change="updateTodoStatus(todo)" ng-model-options="{updateOn: 'blur'}"/>
+                    <span ng-click="changeToEditMode()" ng-show="NotEditMode" ng-class="{strike: todo.checked}">{{todo.text}}</span></td>
                 <td>{{todo.quantity}}</td>
+
                 <td><div class="checkbox">
-                    <label><input type="checkbox" ng-model="checked" ng-true-value="false" ng-false-value="true" ng-change="updateTodoStatus(todo)"></label>
+                    <label><input type="checkbox" ng-model="todo.checked" ng-change="updateTodoStatus(todo)"></label>
+                    <i class="fa fa-trash trash fa-lg" aria-hidden="true" ng-click="deleteTodo(todo._id)"></i>
+                    <i class="fa fa-plus-square-o update fa-lg" aria-hidden="true" ng-click="updateQuantity(todo, true)"></i>
+                    <i class="fa fa-minus-square-o update fa-lg" aria-hidden="true" ng-click="updateQuantity(todo, false)"></i>
+
                 </div></td>
                 </tbody>
             </table>
